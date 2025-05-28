@@ -1,7 +1,7 @@
 from graphics import Point, Line
 
 class Cell:
-    def __init__(self, window):
+    def __init__(self, window=None):
         self.has_left_wall = True
         self.has_right_wall = True
         self.has_top_wall = True
@@ -11,6 +11,8 @@ class Cell:
         self.__x2 = -1
         self.__y2 = -1
         self.__win = window
+        self.visited = False
+
     
     def draw(self, x1, y1, x2, y2):
         if self.__win is None: 
@@ -23,24 +25,32 @@ class Cell:
         if self.has_left_wall:
             line = Line(Point(self.__x1, self.__y1), Point(self.__x1, self.__y2))
             self.__win.draw_line(line, "black")
+        elif self.has_left_wall is False:
+            line = Line(Point(self.__x1, self.__y1), Point(self.__x1, self.__y2))
+            self.__win.draw_line(line, "white")
         
         if self.has_right_wall:
             line = Line(Point(self.__x2, self.__y1), Point(self.__x2, self.__y2))
             self.__win.draw_line(line, "black")
+        elif self.has_right_wall is False:
+            line = Line(Point(self.__x2, self.__y1), Point(self.__x2, self.__y2))
+            self.__win.draw_line(line, "white")
         
         if self.has_top_wall:
             line = Line(Point(self.__x1, self.__y1), Point(self.__x2, self.__y1))
             self.__win.draw_line(line, "black")
+        elif self.has_top_wall is False:
+            line = Line(Point(self.__x1, self.__y1), Point(self.__x2, self.__y1))
+            self.__win.draw_line(line, "white")
         
         if self.has_bottom_wall:
             line = Line(Point(self.__x1, self.__y2), Point(self.__x2, self.__y2))
             self.__win.draw_line(line, "black")
-
-    def get_center(self):
-        center_x = (self.__x1 + self.__x2) / 2
-        center_y = (self.__y1 + self.__y2) / 2
-        return Point(center_x, center_y)
-
+        elif self.has_bottom_wall is False:
+            line = Line(Point(self.__x1, self.__y2), Point(self.__x2, self.__y2))
+            self.__win.draw_line(line, "white")
+        
+        
     def draw_move(self, to_cell, undo=False):
         half_length = abs(self.__x2 - self.__x1) // 2
         x_center = half_length + self.__x1
